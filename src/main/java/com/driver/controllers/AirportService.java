@@ -146,7 +146,7 @@ public class AirportService {
 
         return revenue;
 
-        return 3000 * size + 50 * size * (size - 1) / 2;
+
     }
 
     public String addPassenger(Passenger passenger) {
