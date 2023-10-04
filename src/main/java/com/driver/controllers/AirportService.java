@@ -72,7 +72,7 @@ public class AirportService {
             return "FAILURE";
 
         List<Integer> passengerList = airportRepositoryObj.getPassengersByFlight(flightId);
-        if (passengerList.contains(passengerId) || passengerList.size() >= flight.getMaxCapacity())
+        if (passengerList.contains(passengerId) || passengerList.size() == flight.getMaxCapacity())
             return "FAILURE";
 
         airportRepositoryObj.bookTicket(flightId, passengerId);
