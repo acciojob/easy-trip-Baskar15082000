@@ -72,7 +72,7 @@ public class AirportService {
             return "FAILURE";
 
         List<Integer> passengerList = airportRepositoryObj.getPassengersByFlight(flightId);
-        if (passengerList.contains(passengerId) || passengerList.size() == flight.getMaxCapacity())
+        if (passengerList.contains(passengerId) || passengerList.size() >= flight.getMaxCapacity())
             return "FAILURE";
 
         airportRepositoryObj.bookTicket(flightId, passengerId);
@@ -102,7 +102,7 @@ public class AirportService {
 
         for (Flight flight : flights)
             if (airportRepositoryObj.getPassengersByFlight(flight.getFlightId()).contains(passengerId))
-                ++count;
+                count++;
 
         return count;
     }
@@ -130,7 +130,23 @@ public class AirportService {
     public int calculateRevenueOfAFlight(Integer flightId) {
         int size =  airportRepositoryObj.getPassengersByFlight(flightId).size();
 
-        return 3000 * size + 50;
+
+
+        // Calculate the revenue
+        int baseFarePerPassenger = 3000;
+        int additionalChargePerPassenger = 50;
+
+        int revenue = baseFarePerPassenger * size;
+
+        // If there is more than one passenger, add the additional charges
+        if (size > 1) {
+            int additionalCharges = additionalChargePerPassenger * ((size - 1) * size) / 2;
+            revenue += additionalCharges;
+        }
+
+        return revenue;
+
+        return 3000 * size + 50 * size * (size - 1) / 2;
     }
 
     public String addPassenger(Passenger passenger) {
